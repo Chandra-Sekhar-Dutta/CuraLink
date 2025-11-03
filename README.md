@@ -248,7 +248,7 @@ Contributions are welcome! Please follow these steps:
 
 - **Never commit** `.env` or `.env.local` files
 - API keys are stored securely in environment variables
-- User passwords are hashed with bcrypt
+- User passwords are hashed with bcryptjs
 - NextAuth handles authentication securely
 - Regular security updates via Dependabot
 

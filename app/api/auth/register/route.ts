@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Create user
     const [user] = await db.insert(users).values({

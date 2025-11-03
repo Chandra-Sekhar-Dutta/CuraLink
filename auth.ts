@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from '@/db';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { z } from 'zod';
 import { users, accounts, sessions, verificationTokens } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const passwordsMatch = await bcrypt.compare(password, user.password);
+        const passwordsMatch = await bcryptjs.compare(password, user.password);
 
         if (!passwordsMatch) {
           return null;
