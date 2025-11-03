@@ -13,6 +13,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log
+logs/
+*.log.*
 
 # Env files
 .env
@@ -47,6 +50,12 @@ tmp/
 
 # Jetpack
 .cache/
+
+# Test files with API keys (use .env instead)
+test-gemini.js
+test-gemini-direct.js
+test-faq-chatbot.js
+list-models.js
 
 # Allow git to track the following (common for Next apps)
 !public/
