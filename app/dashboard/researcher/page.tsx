@@ -9,6 +9,10 @@ import ORCIDBadge from '@/components/ORCIDBadge';
 import NotificationBell from '@/components/NotificationBell';
 import { registerResearcher } from '@/lib/researchers';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 const ResearcherDashboard = () => {
   const { data: session, status } = useSession();
   const router = useRouter();

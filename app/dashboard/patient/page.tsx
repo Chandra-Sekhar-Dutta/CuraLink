@@ -7,6 +7,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import NotificationBell from '@/components/NotificationBell';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 const PatientDashboard = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
