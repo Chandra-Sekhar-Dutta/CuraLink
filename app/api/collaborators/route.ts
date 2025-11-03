@@ -5,6 +5,9 @@ import { db } from '@/db';
 import { users, researcherProfiles } from '@/db/schema';
 import { eq, ne, and, sql } from 'drizzle-orm';
 
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     // Try to get session, but allow access even if it fails

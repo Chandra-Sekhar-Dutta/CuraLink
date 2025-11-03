@@ -3,6 +3,9 @@ import { db } from '@/db';
 import { users, researcherProfiles } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
