@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import '../styles/globals.css';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
@@ -7,16 +6,6 @@ import AIAssistant from '@/components/AIAssistant';
 
 // Force dynamic rendering for the entire app due to auth session
 export const dynamic = 'force-dynamic';
-
-export const metadata: Metadata = {
-  title: 'CuraLink - Clinical Research Platform',
-  description: 'Connecting patients with clinical trials and researchers',
-  icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
-  },
-};
 
 export default async function RootLayout({
   children,
@@ -34,6 +23,13 @@ export default async function RootLayout({
   
   return (
     <html lang="en">
+      <head>
+        <title>CuraLink - Clinical Research Platform</title>
+        <meta name="description" content="Connecting patients with clinical trials and researchers" />
+        <link rel="icon" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+      </head>
       {/* suppressHydrationWarning prevents mismatch warnings caused by browser
           extensions (e.g. Grammarly) injecting attributes into <body> on the
           client that the server-rendered HTML doesn't have. */}

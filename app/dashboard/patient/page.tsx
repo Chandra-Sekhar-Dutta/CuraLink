@@ -772,6 +772,7 @@ const PatientDashboard = () => {
               <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
               <div className="space-y-3">
                 <motion.button
+                  onClick={() => router.push('/dashboard/patient/clinical-trials')}
                   className="w-full bg-gradient-to-r from-pink-100 to-purple-100 hover:from-pink-200 hover:to-purple-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
@@ -780,6 +781,7 @@ const PatientDashboard = () => {
                   <span className="font-semibold">Find Clinical Trials</span>
                 </motion.button>
                 <motion.button
+                  onClick={() => router.push('/dashboard/patient/prescriptions')}
                   className="w-full bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
@@ -788,6 +790,7 @@ const PatientDashboard = () => {
                   <span className="font-semibold">Refill Prescription</span>
                 </motion.button>
                 <motion.button
+                  onClick={() => router.push('/dashboard/patient/contact-doctor')}
                   className="w-full bg-gradient-to-r from-indigo-100 to-pink-100 hover:from-indigo-200 hover:to-pink-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}

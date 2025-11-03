@@ -439,26 +439,13 @@ const ResearcherDashboard = () => {
 
             {/* Quick Actions */}
             <motion.div
-              className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl p-6 shadow-lg text-white cursor-pointer hover:shadow-2xl transition-all"
+              className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl p-6 shadow-lg text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              onClick={() => router.push('/dashboard/researcher/profile-setup')}
-              whileHover={{ scale: 1.03, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              title="Click to view/edit your profile"
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Researcher Profile</h2>
-                <motion.svg 
-                  className="w-5 h-5" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                  whileHover={{ x: 3 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </motion.svg>
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
@@ -490,7 +477,10 @@ const ResearcherDashboard = () => {
               </div>
               <div className="mt-4 pt-4 border-t border-white/20">
                 <motion.button
-                  onClick={() => router.push('/dashboard/researcher/profile-setup')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/dashboard/researcher/profile-setup');
+                  }}
                   className="w-full bg-white text-indigo-600 hover:bg-white/90 rounded-xl py-3 px-4 font-bold transition-all flex items-center justify-center gap-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -503,7 +493,10 @@ const ResearcherDashboard = () => {
               </div>
               <div className="mt-3 space-y-2">
                 <motion.button
-                  onClick={() => router.push('/dashboard/researcher/trials')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/dashboard/researcher/trials');
+                  }}
                   className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
@@ -512,7 +505,10 @@ const ResearcherDashboard = () => {
                   <span className="font-semibold">New Project</span>
                 </motion.button>
                 <motion.button
-                  onClick={() => router.push('/dashboard/researcher/analytics')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/dashboard/researcher/analytics');
+                  }}
                   className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
@@ -521,7 +517,10 @@ const ResearcherDashboard = () => {
                   <span className="font-semibold">View Analytics</span>
                 </motion.button>
                 <motion.button
-                  onClick={() => router.push('/dashboard/researcher/collaborators')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/dashboard/researcher/collaborators');
+                  }}
                   className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
