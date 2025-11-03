@@ -5,6 +5,9 @@ import { authOptions } from '@/auth';
 import SessionProvider from './SessionProvider';
 import AIAssistant from '@/components/AIAssistant';
 
+// Force dynamic rendering for the entire app due to auth session
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'CuraLink - Clinical Research Platform',
   description: 'Connecting patients with clinical trials and researchers',
