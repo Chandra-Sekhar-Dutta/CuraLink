@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "orcid_id" varchar(19);

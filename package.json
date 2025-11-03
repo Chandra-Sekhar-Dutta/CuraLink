@@ -1,0 +1,51 @@
+{
+  "name": "my-nextjs-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx db/migrate.ts",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@auth/core": "^0.34.3",
+    "@auth/drizzle-adapter": "^1.11.1",
+    "@auth/nextjs": "^0.0.0-380f8d56",
+    "@google/generative-ai": "^0.24.1",
+    "@neondatabase/serverless": "^1.0.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/nodemailer": "^7.0.3",
+    "@types/uuid": "^11.0.0",
+    "bcrypt": "^6.0.0",
+    "chart.js": "^4.5.1",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
+    "framer-motion": "^12.23.24",
+    "jsonwebtoken": "^9.0.2",
+    "next": "13.5.6",
+    "next-auth": "^4.24.13",
+    "nodemailer": "^7.0.10",
+    "pg": "^8.16.3",
+    "react": "18.2.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "18.2.0",
+    "tsx": "^4.20.6",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "20.8.9",
+    "@types/react": "18.2.33",
+    "@types/react-dom": "18.2.14",
+    "autoprefixer": "^10.4.16",
+    "drizzle-kit": "^0.31.6",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "typescript": "5.2.2"
+  }
+}

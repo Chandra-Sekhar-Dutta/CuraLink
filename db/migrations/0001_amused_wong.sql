@@ -1,0 +1,1 @@
+ALTER TABLE "accounts" ALTER COLUMN "expires_at" TYPE integer USING (CASE WHEN "expires_at" IS NOT NULL THEN EXTRACT(EPOCH FROM "expires_at")::integer ELSE NULL END);
