@@ -20,7 +20,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  let session = null;
+  
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    console.error('Failed to get session, continuing without auth:', error);
+    // Continue without session - app will work in guest mode
+  }
   
   return (
     <html lang="en">
