@@ -255,26 +255,59 @@ const ResearcherDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Quick Links */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-6 sm:mb-8"
+          className="mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {[
-            { href: '/dashboard/researcher/profile-setup', label: 'Profile', emoji: '🧑‍🔬' },
-            { href: '/dashboard/researcher/experts', label: 'Experts', emoji: '👩‍⚕️' },
-            { href: '/dashboard/researcher/collaborators', label: 'Collaborators', emoji: '🤝' },
-            { href: '/dashboard/researcher/trials', label: 'Manage Trials', emoji: '🧪' },
-            { href: '/dashboard/researcher/forums', label: 'Forums', emoji: '🏛️' },
-            { href: '/dashboard/researcher/favorites', label: 'Favorites', emoji: '⭐' },
-          ].map((item) => (
-            <Link key={item.href} href={item.href} className="group">
-              <div className="w-full bg-white rounded-xl p-2 sm:p-3 shadow hover:shadow-md transition-all border border-transparent hover:border-indigo-200 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                <span className="text-base sm:text-lg">{item.emoji}</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-indigo-600 text-center sm:text-left">{item.label}</span>
-              </div>
-            </Link>
-          ))}
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+            <span className="text-2xl">🚀</span>
+            Quick Access
+          </h2>
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+            {[
+              { href: '/dashboard/researcher/profile-setup', label: 'Profile', emoji: '🧑‍🔬', color: 'from-blue-500 to-indigo-600' },
+              { href: '/dashboard/researcher/experts', label: 'Experts', emoji: '👩‍⚕️', color: 'from-green-500 to-emerald-600' },
+              { href: '/dashboard/researcher/collaborators', label: 'Collaborators', emoji: '🤝', color: 'from-purple-500 to-pink-600' },
+              { href: '/dashboard/researcher/trials', label: 'Manage Trials', emoji: '🧪', color: 'from-orange-500 to-red-600' },
+              { href: '/dashboard/researcher/forums', label: 'Forums', emoji: '🏛️', color: 'from-cyan-500 to-blue-600' },
+              { href: '/dashboard/researcher/favorites', label: 'Favorites', emoji: '⭐', color: 'from-yellow-500 to-orange-600' },
+              { href: '/dashboard/researcher/find', label: 'Find Researchers', emoji: '🔍', color: 'from-indigo-500 to-purple-600' },
+              { href: '/dashboard/researcher/connections', label: 'My Connections', emoji: '🤝', color: 'from-pink-500 to-rose-600' },
+              { href: '/dashboard/researcher/chat', label: 'Messages', emoji: '💬', color: 'from-violet-500 to-purple-600' },
+            ].map((item, index) => (
+              <motion.div
+                key={item.href}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
+                <Link href={item.href} className="group block">
+                  <div className="relative bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-200 overflow-hidden h-full">
+                    {/* Gradient Background on Hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-2">
+                      <motion.div
+                        className="text-3xl sm:text-4xl"
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        {item.emoji}
+                      </motion.div>
+                      <span className="text-xs sm:text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors duration-300 leading-tight">
+                        {item.label}
+                      </span>
+                    </div>
+
+                    {/* Shine Effect */}
+                    <div className="absolute inset-0 -left-full group-hover:left-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 transition-all duration-700 ease-out transform skew-x-12"></div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
         {/* Stats Grid */}
         <motion.div
