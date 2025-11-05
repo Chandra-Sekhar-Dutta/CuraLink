@@ -4,6 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
+// Generate a unique session ID for tracking chat conversations
+function generateSessionId(): string {
+  return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -115,6 +120,7 @@ export default function FAQPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId] = useState(() => generateSessionId()); // Generate once per page load
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -149,7 +155,10 @@ export default function FAQPage() {
       const response = await fetch('/api/faq-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.content }),
+        body: JSON.stringify({ 
+          message: userMessage.content,
+          sessionId: sessionId 
+        }),
       });
 
       const data = await response.json();

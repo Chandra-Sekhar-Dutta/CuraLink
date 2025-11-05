@@ -196,3 +196,13 @@ export const researcherCollaborators = pgTable('researcher_collaborators', {
     uq: sql`UNIQUE (${table.researcherId}, ${table.collaboratorId}, ${table.projectId})`,
   } as any;
 });
+
+// FAQ Chatbot conversations
+export const faqChatConversations = pgTable('faq_chat_conversations', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id), // NULL for anonymous users
+  sessionId: varchar('session_id', { length: 255 }).notNull(), // Track sessions even for anonymous users
+  userMessage: text('user_message').notNull(),
+  assistantResponse: text('assistant_response').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});

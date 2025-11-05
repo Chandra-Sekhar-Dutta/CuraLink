@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getServerSession } from 'next-auth';
+import { db } from '@/db';
+import { faqChatConversations, users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 // Initialize Gemini AI with API key
 const apiKey = process.env.GEMINI_API_KEY;
@@ -90,12 +94,28 @@ Be friendly, concise, and specific. If a question is outside the scope of CuraLi
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { message } = body;
+    const { message, sessionId } = body;
 
-    console.log('FAQ Chat Request:', { message, hasApiKey: !!apiKey });
+    console.log('FAQ Chat Request:', { message, sessionId, hasApiKey: !!apiKey });
+
+    // Get user session (if logged in)
+    const session = await getServerSession();
+    let userId: number | null = null;
+    
+    if (session?.user?.email) {
+      const userResult = await db.select({ id: users.id })
+        .from(users)
+        .where(eq(users.email, session.user.email))
+        .limit(1);
+      userId = userResult[0]?.id || null;
+    }
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json({ error: 'Valid message is required' }, { status: 400 });
+    }
+
+    if (!sessionId || typeof sessionId !== 'string') {
+      return NextResponse.json({ error: 'Session ID is required' }, { status: 400 });
     }
 
     if (!genAI || !apiKey) {
@@ -133,6 +153,20 @@ Assistant (answer specifically about CuraLink platform):`;
     text = text.replace(/\*\*/g, '');
 
     console.log('Gemini API Response received successfully');
+
+    // Save conversation to database
+    try {
+      await db.insert(faqChatConversations).values({
+        userId: userId,
+        sessionId: sessionId,
+        userMessage: message.trim(),
+        assistantResponse: text,
+      });
+      console.log('Chat conversation saved to database');
+    } catch (dbError) {
+      console.error('Failed to save chat to database:', dbError);
+      // Don't fail the request if database save fails
+    }
 
     return NextResponse.json({ 
       response: text,
