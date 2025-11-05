@@ -43,6 +43,13 @@
       "when": 1762103803020,
       "tag": "0005_lush_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1762370672989,
+      "tag": "0006_groovy_senator_kelly",
+      "breakpoints": true
     }
   ]
 }
