@@ -262,44 +262,26 @@ const ResearcherDashboard = () => {
         >
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             {[
-              { href: '/dashboard/researcher/profile-setup', label: 'Profile', emoji: '🧑‍🔬', color: 'from-blue-500 to-indigo-600' },
-              { href: '/dashboard/researcher/experts', label: 'Experts', emoji: '👩‍⚕️', color: 'from-green-500 to-emerald-600' },
-              { href: '/dashboard/researcher/collaborators', label: 'Collaborators', emoji: '🤝', color: 'from-purple-500 to-pink-600' },
-              { href: '/dashboard/researcher/trials', label: 'Manage Trials', emoji: '🧪', color: 'from-orange-500 to-red-600' },
-              { href: '/dashboard/researcher/forums', label: 'Forums', emoji: '🏛️', color: 'from-cyan-500 to-blue-600' },
-              { href: '/dashboard/researcher/favorites', label: 'Favorites', emoji: '⭐', color: 'from-yellow-500 to-orange-600' },
-              { href: '/dashboard/researcher/find', label: 'Find Researchers', emoji: '🔍', color: 'from-indigo-500 to-purple-600' },
-              { href: '/dashboard/researcher/connections', label: 'My Connections', emoji: '🤝', color: 'from-pink-500 to-rose-600' },
-              { href: '/dashboard/researcher/chat', label: 'Messages', emoji: '💬', color: 'from-violet-500 to-purple-600' },
+              { href: '/dashboard/researcher/profile-setup', label: 'Profile', color: 'from-blue-500 to-indigo-600' },
+              { href: '/dashboard/researcher/experts', label: 'Experts', color: 'from-green-500 to-emerald-600' },
+              { href: '/dashboard/researcher/collaborators', label: 'Collaborators', color: 'from-purple-500 to-pink-600' },
+              { href: '/dashboard/researcher/trials', label: 'Manage Trials', color: 'from-orange-500 to-red-600' },
+              { href: '/dashboard/researcher/forums', label: 'Forums', color: 'from-cyan-500 to-blue-600' },
+              { href: '/dashboard/researcher/favorites', label: 'Favorites', color: 'from-yellow-500 to-orange-600' },
+              { href: '/dashboard/researcher/find', label: 'Find Researchers', color: 'from-indigo-500 to-purple-600' },
+              { href: '/dashboard/researcher/connections', label: 'My Connections', color: 'from-pink-500 to-rose-600' },
+              { href: '/dashboard/researcher/chat', label: 'Messages', color: 'from-violet-500 to-purple-600' },
             ].map((item, index) => (
               <motion.div
                 key={item.href}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
                 className="flex-shrink-0"
               >
-                <Link href={item.href} className="group block">
-                  <div className="relative bg-white rounded-2xl p-3 sm:p-4 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-200 overflow-hidden w-32 sm:w-36">
-                    {/* Gradient Background on Hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-2">
-                      <motion.div
-                        className="text-3xl sm:text-4xl"
-                        whileHover={{ scale: 1.2, rotate: 10 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
-                        {item.emoji}
-                      </motion.div>
-                      <span className="text-xs sm:text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors duration-300 leading-tight">
-                        {item.label}
-                      </span>
-                    </div>
-
-                    {/* Shine Effect */}
-                    <div className="absolute inset-0 -left-full group-hover:left-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 transition-all duration-700 ease-out transform skew-x-12"></div>
+                <Link href={item.href} className="group">
+                  <div className={`relative px-4 py-2 rounded-full bg-gradient-to-r ${item.color} text-white font-medium text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 whitespace-nowrap`}>
+                    {item.label}
                   </div>
                 </Link>
               </motion.div>
