@@ -122,7 +122,7 @@ const ResearcherDashboard = () => {
     affiliation: profile?.affiliation || 'Harvard Medical School',
     department: profile?.department || 'Department of Neuroscience',
     position: profile?.position || 'Senior Research Scientist',
-    orcid: '0000-0002-1234-5678',
+    orcid: '0000-0003-1419-2405',
     phone: profile?.phone || '+1 (555) 234-5678',
     specialization: profile?.specialties?.[0] || 'Neurodegenerative Diseases',
     yearsOfExperience: 12
