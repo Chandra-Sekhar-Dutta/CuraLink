@@ -20,6 +20,9 @@ export interface ClinicalTrial {
   country?: string;
   description?: string;
   sponsor?: string;
+  url?: string;
+  enrollment?: number;
+  summary?: string;
 }
 
 export interface ExpertResearcher {
@@ -112,16 +115,17 @@ export async function fetchClinicalTrials(
     // Expand search terms to include related medical conditions
     const expandedTerms = autoExpand ? expandMedicalTerms(conditions) : conditions;
     
-    // Build query parameters with expanded terms
-    const conditionQuery = expandedTerms.map(c => `AREA[Condition]${encodeURIComponent(c)}`).join(' OR ');
-    let query = conditionQuery;
+    // Build API URL with condition and location parameters
+    let apiUrl = `https://clinicaltrials.gov/api/v2/studies?query.cond=${encodeURIComponent(conditions.join(','))}`;
     
+    // Add location filter if provided
     if (location) {
-      query += ` AND AREA[LocationCity]${encodeURIComponent(location)}`;
+      apiUrl += `&query.locn=${encodeURIComponent(location)}`;
     }
     
-    // Use the new ClinicalTrials.gov API v2
-    const apiUrl = `https://clinicaltrials.gov/api/v2/studies?query.cond=${encodeURIComponent(conditions.join(','))}&pageSize=${maxResults}&format=json`;
+    apiUrl += `&pageSize=${maxResults}&format=json`;
+    
+    console.log('Fetching trials with URL:', apiUrl);
     
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -161,8 +165,10 @@ export async function fetchClinicalTrials(
       else if (overallStatus.toLowerCase().includes('completed')) status = 'Completed';
       else if (overallStatus.toLowerCase().includes('not')) status = 'Not Recruiting';
       
+      const nctId = identificationModule?.nctId || `trial-${trials.length}`;
+      
       trials.push({
-        id: identificationModule?.nctId || `trial-${trials.length}`,
+        id: nctId,
         title: identificationModule?.briefTitle || 'Untitled Study',
         status,
         phase,
@@ -174,6 +180,7 @@ export async function fetchClinicalTrials(
         country: firstLocation.country,
         description: descriptionModule?.briefSummary || '',
         sponsor: sponsorCollaboratorsModule?.leadSponsor?.name || 'Unknown Sponsor',
+        url: nctId.startsWith('NCT') ? `https://clinicaltrials.gov/study/${nctId}` : undefined,
       });
     }
     
