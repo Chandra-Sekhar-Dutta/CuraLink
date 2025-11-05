@@ -285,7 +285,7 @@ const Services = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   <motion.a
-                    href="/contact"
+                    href="/Contact"
                     className="inline-flex items-center gap-3 justify-center px-8 py-4 border-2 border-white text-base font-semibold rounded-full text-white bg-transparent hover:bg-white hover:text-indigo-600 transition-all duration-300 shadow-xl"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
