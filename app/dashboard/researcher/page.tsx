@@ -260,11 +260,7 @@ const ResearcherDashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
-            <span className="text-2xl">🚀</span>
-            Quick Access
-          </h2>
-          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             {[
               { href: '/dashboard/researcher/profile-setup', label: 'Profile', emoji: '🧑‍🔬', color: 'from-blue-500 to-indigo-600' },
               { href: '/dashboard/researcher/experts', label: 'Experts', emoji: '👩‍⚕️', color: 'from-green-500 to-emerald-600' },
@@ -281,9 +277,10 @@ const ResearcherDashboard = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="flex-shrink-0"
               >
                 <Link href={item.href} className="group block">
-                  <div className="relative bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-200 overflow-hidden h-full">
+                  <div className="relative bg-white rounded-2xl p-3 sm:p-4 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-200 overflow-hidden w-32 sm:w-36">
                     {/* Gradient Background on Hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
                     
