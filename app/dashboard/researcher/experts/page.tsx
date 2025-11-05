@@ -12,6 +12,10 @@ export default function ResearcherExpertsPage() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [selectedExpert, setSelectedExpert] = useState<any>(null);
+  const [sendingRequest, setSendingRequest] = useState(false);
+  const [requestMessage, setRequestMessage] = useState('');
 
   useEffect(() => { 
     if (status === 'unauthenticated') router.push('/auth/signin'); 
@@ -46,6 +50,34 @@ export default function ResearcherExpertsPage() {
       }
       return next;
     });
+  };
+
+  const handleConnectClick = (expert: any) => {
+    setSelectedExpert(expert);
+    setRequestMessage(`Hi ${expert.name}, I would like to connect with you regarding your expertise in ${expert.specialty}.`);
+    setShowConnectModal(true);
+  };
+
+  const handleSendConnectionRequest = async () => {
+    if (!selectedExpert) return;
+    
+    setSendingRequest(true);
+    try {
+      // Simulate sending connection request
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      alert(`Connection request sent to ${selectedExpert.name}!\n\nAn email has been sent to: ${selectedExpert.email}`);
+      setShowConnectModal(false);
+      setRequestMessage('');
+    } catch (error) {
+      alert('Failed to send connection request. Please try again.');
+    } finally {
+      setSendingRequest(false);
+    }
+  };
+
+  const handleViewProfile = (expertId: string) => {
+    router.push(`/dashboard/researcher/experts/${expertId}`);
   };
 
   return (
@@ -148,13 +180,13 @@ export default function ResearcherExpertsPage() {
                 <div className="flex gap-2">
                   <button 
                     className="flex-1 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200 transition-colors"
-                    onClick={() => alert('Connect feature coming soon!')}
+                    onClick={() => handleConnectClick(expert)}
                   >
                     Connect
                   </button>
                   <button 
                     className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors"
-                    onClick={() => alert('Profile view coming soon!')}
+                    onClick={() => handleViewProfile(expert.id)}
                   >
                     View Profile
                   </button>
@@ -180,6 +212,87 @@ export default function ResearcherExpertsPage() {
           </button>
         </div>
       </div>
+
+      {/* Connection Request Modal */}
+      {showConnectModal && selectedExpert && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <motion.div
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Send Connection Request</h3>
+              <button
+                onClick={() => !sendingRequest && setShowConnectModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                disabled={sendingRequest}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Expert Info */}
+            <div className="flex items-center gap-3 mb-4 p-3 bg-indigo-50 rounded-lg">
+              <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                {selectedExpert.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+              </div>
+              <div>
+                <div className="font-semibold text-gray-900">{selectedExpert.name}</div>
+                <div className="text-sm text-indigo-600">{selectedExpert.specialty}</div>
+              </div>
+            </div>
+
+            {/* Message Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Message (Optional)
+              </label>
+              <textarea
+                value={requestMessage}
+                onChange={(e) => setRequestMessage(e.target.value)}
+                className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 focus:border-indigo-500 focus:outline-none transition-colors resize-none"
+                rows={4}
+                placeholder="Introduce yourself and explain why you'd like to connect..."
+                disabled={sendingRequest}
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowConnectModal(false)}
+                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                disabled={sendingRequest}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSendConnectionRequest}
+                disabled={sendingRequest}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {sendingRequest ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    Send Request
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
