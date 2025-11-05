@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { db } from '@/db';
 import { researcherConnections, users } from '@/db/schema';
 import { eq, and, or } from 'drizzle-orm';
+import { sendConnectionRequestEmail } from '@/lib/mail';
 
 export const dynamic = 'force-dynamic';
 
@@ -143,9 +144,31 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
+    // Get receiver details for email
+    const receiver = await db.query.users.findFirst({
+      where: eq(users.id, receiverId),
+    });
+
+    // Send email notification to receiver
+    if (receiver?.email) {
+      try {
+        await sendConnectionRequestEmail(
+          receiver.email,
+          receiver.name || 'User',
+          currentUser.name || 'A researcher',
+          currentUser.email
+        );
+        console.log(`Connection request email sent to ${receiver.email}`);
+      } catch (emailError) {
+        console.error('Failed to send connection request email:', emailError);
+        // Don't fail the request if email fails
+      }
+    }
+
     return NextResponse.json({
       success: true,
       connection: newConnection,
+      message: 'Connection request sent successfully',
     });
   } catch (error: any) {
     console.error('Error creating connection request:', error);
