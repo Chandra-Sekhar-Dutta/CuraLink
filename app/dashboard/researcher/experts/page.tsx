@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { EXPERTS } from '@/lib/mockData';
 import { toggleFavorite, getFavorites } from '@/lib/favorites';
+import { fetchExpertsByCondition, ExpertResearcher } from '@/lib/externalData';
 
 export default function ResearcherExpertsPage() {
   const { data: session, status } = useSession();
@@ -16,6 +17,9 @@ export default function ResearcherExpertsPage() {
   const [selectedExpert, setSelectedExpert] = useState<any>(null);
   const [sendingRequest, setSendingRequest] = useState(false);
   const [requestMessage, setRequestMessage] = useState('');
+  const [liveExperts, setLiveExperts] = useState<ExpertResearcher[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searchMode, setSearchMode] = useState<'mock' | 'live'>('mock');
 
   useEffect(() => { 
     if (status === 'unauthenticated') router.push('/auth/signin'); 
@@ -27,17 +31,73 @@ export default function ResearcherExpertsPage() {
     setFavorites(new Set(favoriteIds));
   }, []);
 
+  // Search live experts when query changes
+  useEffect(() => {
+    const searchLiveExperts = async () => {
+      const q = query.trim();
+      if (q.length < 3) {
+        setLiveExperts([]);
+        setSearchMode('mock');
+        return;
+      }
+
+      setLoading(true);
+      setSearchMode('live');
+      
+      try {
+        const experts = await fetchExpertsByCondition([q], 20);
+        setLiveExperts(experts);
+      } catch (error) {
+        console.error('Error fetching live experts:', error);
+        setLiveExperts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(searchLiveExperts, 500);
+    return () => clearTimeout(debounceTimer);
+  }, [query]);
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return EXPERTS;
-    return EXPERTS.filter(e => 
-      e.name.toLowerCase().includes(q) || 
-      e.specialty.toLowerCase().includes(q) || 
-      e.conditions.some(c => c.toLowerCase().includes(q)) ||
-      e.city.toLowerCase().includes(q) ||
-      e.country.toLowerCase().includes(q)
-    );
-  }, [query]);
+    
+    // If query is less than 3 chars, show mock data filtered
+    if (q.length < 3) {
+      if (!q) return EXPERTS;
+      return EXPERTS.filter(e => 
+        e.name.toLowerCase().includes(q) || 
+        e.specialty.toLowerCase().includes(q) || 
+        e.conditions.some(c => c.toLowerCase().includes(q)) ||
+        e.city.toLowerCase().includes(q) ||
+        e.country.toLowerCase().includes(q)
+      );
+    }
+    
+    // If we have live results, show them
+    if (liveExperts.length > 0) {
+      return liveExperts.map(expert => ({
+        id: expert.id,
+        name: expert.name,
+        specialty: expert.specialty,
+        conditions: expert.conditions,
+        city: expert.city,
+        country: expert.country,
+        email: expert.email || `${expert.name.toLowerCase().replace(/\s/g, '.')}@example.com`,
+        orcidId: expert.orcidId,
+        affiliation: expert.affiliation,
+        publicationCount: expert.publicationCount,
+        url: expert.url,
+      }));
+    }
+    
+    // If loading, show mock data as placeholder
+    if (loading) {
+      return EXPERTS.slice(0, 3);
+    }
+    
+    return [];
+  }, [query, liveExperts, loading]);
 
   const handleToggleFavorite = (id: string) => {
     toggleFavorite('experts', id);
@@ -96,28 +156,49 @@ export default function ResearcherExpertsPage() {
           <input 
             value={query} 
             onChange={(e) => setQuery(e.target.value)} 
-            placeholder="Search by name, specialty, condition, or location..." 
+            placeholder="Search by name, specialty, condition, or disease (min 3 characters for live search)..." 
             className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition-colors" 
           />
-          <div className="text-xs text-gray-500 mt-2">
-            Found {results.length} expert{results.length !== 1 ? 's' : ''}
+          <div className="flex items-center justify-between mt-2">
+            <div className="text-xs text-gray-500">
+              {loading && <span className="text-indigo-600">🔄 Searching live database...</span>}
+              {!loading && searchMode === 'live' && (
+                <span className="text-green-600">✓ Showing {results.length} live results from ORCID</span>
+              )}
+              {!loading && searchMode === 'mock' && (
+                <span>Found {results.length} expert{results.length !== 1 ? 's' : ''}</span>
+              )}
+            </div>
+            {query.length >= 3 && (
+              <div className="text-xs text-indigo-600 font-medium">
+                💡 Using ORCID API for real researchers
+              </div>
+            )}
           </div>
         </div>
 
         {/* Results Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {results.map((expert, index) => (
+          {results.map((expert: any, index) => (
             <motion.div
               key={expert.id}
-              className="bg-white rounded-2xl border-2 border-gray-100 p-6 hover:border-indigo-300 hover:shadow-lg transition-all"
+              className="bg-white rounded-2xl border-2 border-gray-100 p-6 hover:border-indigo-300 hover:shadow-lg transition-all relative"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
             >
+              {/* Live Badge */}
+              {expert.orcidId && (
+                <div className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  LIVE
+                </div>
+              )}
+              
               {/* Expert Avatar */}
               <div className="flex items-start justify-between mb-4">
                 <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  {expert.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                  {expert.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                 </div>
                 <button
                   onClick={() => handleToggleFavorite(expert.id)}
@@ -139,6 +220,10 @@ export default function ResearcherExpertsPage() {
                 <h3 className="font-bold text-gray-900 text-lg mb-1">{expert.name}</h3>
                 <p className="text-indigo-600 font-semibold text-sm mb-2">{expert.specialty}</p>
                 
+                {expert.affiliation && (
+                  <p className="text-xs text-gray-500 mb-2">🏛️ {expert.affiliation}</p>
+                )}
+                
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-sm text-gray-600">
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,13 +239,22 @@ export default function ResearcherExpertsPage() {
                     </svg>
                     {expert.email}
                   </div>
+                  
+                  {expert.publicationCount && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      {expert.publicationCount} publications
+                    </div>
+                  )}
                 </div>
 
                 {/* Conditions */}
                 <div className="mb-4">
                   <p className="text-xs font-semibold text-gray-500 mb-2">Specializes in:</p>
                   <div className="flex flex-wrap gap-1">
-                    {expert.conditions.slice(0, 3).map((condition) => (
+                    {expert.conditions.slice(0, 3).map((condition: string) => (
                       <span 
                         key={condition} 
                         className="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-medium"
@@ -184,21 +278,42 @@ export default function ResearcherExpertsPage() {
                   >
                     Connect
                   </button>
-                  <button 
-                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors"
-                    onClick={() => handleViewProfile(expert.id)}
-                  >
-                    View Profile
-                  </button>
+                  {expert.url ? (
+                    <a
+                      href={expert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors text-center"
+                    >
+                      View ORCID
+                    </a>
+                  ) : (
+                    <button 
+                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors"
+                      onClick={() => handleViewProfile(expert.id)}
+                    >
+                      View Profile
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {results.length === 0 && (
+        {results.length === 0 && !loading && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No experts found matching your search criteria.</p>
+            <p className="text-gray-500 text-lg mb-2">No experts found matching your search criteria.</p>
+            {query.length >= 3 && (
+              <p className="text-sm text-gray-400">Try different keywords or check your spelling</p>
+            )}
+          </div>
+        )}
+
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Searching ORCID database...</p>
           </div>
         )}
 
