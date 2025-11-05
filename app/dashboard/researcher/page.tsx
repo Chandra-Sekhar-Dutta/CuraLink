@@ -27,6 +27,8 @@ const ResearcherDashboard = () => {
   } | null>(null);
   const [collaborators, setCollaborators] = useState<any[]>([]);
   const [loadingCollaborators, setLoadingCollaborators] = useState(true);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
 
   // Load researcher profile from server
   useEffect(() => {
@@ -40,6 +42,27 @@ const ResearcherDashboard = () => {
       } catch {}
     })();
   }, []);
+
+  // Load projects from database
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch('/api/researcher/projects');
+        if (res.ok) {
+          const data = await res.json();
+          setProjects(data.projects || []);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setLoadingProjects(false);
+      }
+    };
+    
+    if (status === 'authenticated') {
+      fetchProjects();
+    }
+  }, [status]);
 
   // Load collaborators from API
   useEffect(() => {
@@ -156,17 +179,21 @@ const ResearcherDashboard = () => {
 
   // Mock data
   const stats = [
-    { label: 'Active Projects', value: '12', icon: '📊', color: 'from-indigo-500 to-purple-500' },
+    { label: 'Active Projects', value: projects.filter(p => p.status === 'active').length.toString(), icon: '📊', color: 'from-indigo-500 to-purple-500' },
     { label: 'Collaborators', value: collaborators.length.toString(), icon: '👥', color: 'from-purple-500 to-pink-500' },
     { label: 'Publications', value: '23', icon: '📄', color: 'from-pink-500 to-indigo-500' },
     { label: 'Citations', value: '187', icon: '📚', color: 'from-indigo-500 to-blue-500' },
   ];
 
-  const recentProjects = [
-    { id: 1, title: 'Alzheimer\'s Disease Biomarkers Study', status: 'Active', progress: 75, participants: 120, deadline: '2025-12-31' },
-    { id: 2, title: 'COVID-19 Long-term Effects Research', status: 'Active', progress: 45, participants: 85, deadline: '2026-03-15' },
-    { id: 3, title: 'Diabetes Prevention Trial', status: 'In Review', progress: 90, participants: 200, deadline: '2025-11-20' },
-  ];
+  // Use real projects from database, fallback to empty array
+  const recentProjects = projects.slice(0, 3).map(p => ({
+    id: p.id,
+    title: p.title,
+    status: p.status.charAt(0).toUpperCase() + p.status.slice(1),
+    progress: 75, // TODO: Calculate from project data
+    participants: 0, // TODO: Get from project collaborators
+    deadline: p.endDate || 'N/A',
+  }));
 
   const upcomingTasks = [
     { task: 'Submit IRB approval for Project X', deadline: 'Tomorrow', priority: 'high' },
