@@ -262,15 +262,15 @@ const ResearcherDashboard = () => {
         >
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             {[
-              { href: '/dashboard/researcher/profile-setup', label: 'Profile', color: 'from-blue-500 to-indigo-600' },
-              { href: '/dashboard/researcher/experts', label: 'Experts', color: 'from-green-500 to-emerald-600' },
-              { href: '/dashboard/researcher/collaborators', label: 'Collaborators', color: 'from-purple-500 to-pink-600' },
-              { href: '/dashboard/researcher/trials', label: 'Manage Trials', color: 'from-orange-500 to-red-600' },
-              { href: '/dashboard/researcher/forums', label: 'Forums', color: 'from-cyan-500 to-blue-600' },
-              { href: '/dashboard/researcher/favorites', label: 'Favorites', color: 'from-yellow-500 to-orange-600' },
-              { href: '/dashboard/researcher/find', label: 'Find Researchers', color: 'from-indigo-500 to-purple-600' },
-              { href: '/dashboard/researcher/connections', label: 'My Connections', color: 'from-pink-500 to-rose-600' },
-              { href: '/dashboard/researcher/chat', label: 'Messages', color: 'from-violet-500 to-purple-600' },
+              { href: '/dashboard/researcher/profile-setup', label: 'Profile' },
+              { href: '/dashboard/researcher/experts', label: 'Experts' },
+              { href: '/dashboard/researcher/collaborators', label: 'Collaborators' },
+              { href: '/dashboard/researcher/trials', label: 'Manage Trials' },
+              { href: '/dashboard/researcher/forums', label: 'Forums' },
+              { href: '/dashboard/researcher/favorites', label: 'Favorites' },
+              { href: '/dashboard/researcher/find', label: 'Find Researchers' },
+              { href: '/dashboard/researcher/connections', label: 'My Connections' },
+              { href: '/dashboard/researcher/chat', label: 'Messages' },
             ].map((item, index) => (
               <motion.div
                 key={item.href}
@@ -280,7 +280,7 @@ const ResearcherDashboard = () => {
                 className="flex-shrink-0"
               >
                 <Link href={item.href} className="group">
-                  <div className={`relative px-4 py-2 rounded-full bg-gradient-to-r ${item.color} text-white font-medium text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 whitespace-nowrap`}>
+                  <div className="relative px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-700 font-medium text-sm hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700 transition-all duration-200 whitespace-nowrap shadow-sm hover:shadow-md">
                     {item.label}
                   </div>
                 </Link>

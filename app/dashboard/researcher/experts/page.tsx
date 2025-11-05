@@ -20,6 +20,11 @@ export default function ResearcherExpertsPage() {
   const [liveExperts, setLiveExperts] = useState<ExpertResearcher[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchMode, setSearchMode] = useState<'mock' | 'live'>('mock');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => { 
     if (status === 'unauthenticated') router.push('/auth/signin'); 
@@ -140,38 +145,54 @@ export default function ResearcherExpertsPage() {
     router.push(`/dashboard/researcher/experts/${expertId}`);
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+          <h1 className="text-3xl font-bold text-gray-900">
             Expert Directory
           </h1>
-          <p className="text-gray-700">Browse and connect with experts in various medical specialties</p>
+          <p className="text-gray-600 mt-1">Browse and connect with experts in various medical specialties</p>
         </div>
 
         {/* Search */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <label className="block text-sm font-semibold text-gray-800 mb-2">Search Experts</label>
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Search Experts</label>
           <input 
             value={query} 
             onChange={(e) => setQuery(e.target.value)} 
             placeholder="Search by name, specialty, condition, or disease (min 3 characters for live search)..." 
-            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition-colors" 
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-colors" 
           />
           <div className="flex items-center justify-between mt-2">
             <div className="text-xs text-gray-500">
-              {loading && <span className="text-indigo-600">🔄 Searching live database...</span>}
+              {loading && <span className="text-indigo-600">Searching live database...</span>}
               {!loading && searchMode === 'live' && (
-                <span className="text-green-600">✓ Showing {results.length} live results from ORCID</span>
+                <span className="text-gray-700">Showing {results.length} live results from ORCID</span>
               )}
               {!loading && searchMode === 'mock' && (
                 <span>Found {results.length} expert{results.length !== 1 ? 's' : ''}</span>
               )}
             </div>
             {query.length >= 3 && (
-              <div className="text-xs text-indigo-600 font-medium">
-                💡 Using ORCID API for real researchers
+              <div className="text-xs text-gray-500">
+                Using ORCID API
               </div>
             )}
           </div>
@@ -182,29 +203,28 @@ export default function ResearcherExpertsPage() {
           {results.map((expert: any, index) => (
             <motion.div
               key={expert.id}
-              className="bg-white rounded-2xl border-2 border-gray-100 p-6 hover:border-indigo-300 hover:shadow-lg transition-all relative"
+              className="bg-white rounded-lg border border-gray-200 p-6 hover:border-indigo-300 hover:shadow-md transition-all relative"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
             >
               {/* Live Badge */}
               {expert.orcidId && (
-                <div className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  LIVE
+                <div className="absolute top-3 left-3 bg-indigo-50 text-indigo-700 text-xs font-medium px-2 py-1 rounded">
+                  ORCID
                 </div>
               )}
               
               {/* Expert Avatar */}
               <div className="flex items-start justify-between mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                   {expert.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                 </div>
                 <button
                   onClick={() => handleToggleFavorite(expert.id)}
-                  className={`p-2 rounded-full transition-colors ${
+                  className={`p-2 rounded-lg transition-colors ${
                     favorites.has(expert.id) 
-                      ? 'bg-yellow-100 text-yellow-600' 
+                      ? 'bg-yellow-50 text-yellow-600' 
                       : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
                   }`}
                   title={favorites.has(expert.id) ? 'Remove from favorites' : 'Add to favorites'}
@@ -218,10 +238,10 @@ export default function ResearcherExpertsPage() {
               {/* Expert Info */}
               <div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">{expert.name}</h3>
-                <p className="text-indigo-600 font-semibold text-sm mb-2">{expert.specialty}</p>
+                <p className="text-indigo-600 font-medium text-sm mb-2">{expert.specialty}</p>
                 
                 {expert.affiliation && (
-                  <p className="text-xs text-gray-500 mb-2">🏛️ {expert.affiliation}</p>
+                  <p className="text-xs text-gray-600 mb-2">{expert.affiliation}</p>
                 )}
                 
                 <div className="space-y-2 mb-4">
@@ -273,7 +293,7 @@ export default function ResearcherExpertsPage() {
                 {/* Actions */}
                 <div className="flex gap-2">
                   <button 
-                    className="flex-1 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200 transition-colors"
+                    className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
                     onClick={() => handleConnectClick(expert)}
                   >
                     Connect
@@ -283,13 +303,13 @@ export default function ResearcherExpertsPage() {
                       href={expert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors text-center"
+                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors text-center"
                     >
                       View ORCID
                     </a>
                   ) : (
                     <button 
-                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors"
+                      className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
                       onClick={() => handleViewProfile(expert.id)}
                     >
                       View Profile
@@ -302,16 +322,16 @@ export default function ResearcherExpertsPage() {
         </div>
 
         {results.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg mb-2">No experts found matching your search criteria.</p>
+          <div className="text-center py-12 bg-white rounded-lg">
+            <p className="text-gray-600 text-lg mb-2">No experts found matching your search criteria.</p>
             {query.length >= 3 && (
-              <p className="text-sm text-gray-400">Try different keywords or check your spelling</p>
+              <p className="text-sm text-gray-500">Try different keywords or check your spelling</p>
             )}
           </div>
         )}
 
         {loading && (
-          <div className="text-center py-12">
+          <div className="text-center py-12 bg-white rounded-lg">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Searching ORCID database...</p>
           </div>
