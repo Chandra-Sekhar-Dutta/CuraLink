@@ -38,19 +38,34 @@ export async function GET(request: NextRequest) {
     // Fetch user details for each connection
     const connectionsWithUsers = await Promise.all(
       connections.map(async (conn: any) => {
-        const otherUserId = conn.requesterId === currentUser.id ? conn.receiverId : conn.requesterId;
-        const otherUser = await db.query.users.findFirst({
-          where: eq(users.id, otherUserId),
+        // Fetch both requester and receiver
+        const requester = await db.query.users.findFirst({
+          where: eq(users.id, conn.requesterId),
+        });
+        
+        const receiver = await db.query.users.findFirst({
+          where: eq(users.id, conn.receiverId),
         });
 
         return {
-          ...conn,
-          otherUser: {
-            id: otherUser?.id,
-            name: otherUser?.name,
-            email: otherUser?.email,
-            image: otherUser?.image,
-          },
+          id: conn.id,
+          requesterId: conn.requesterId,
+          receiverId: conn.receiverId,
+          status: conn.status,
+          createdAt: conn.createdAt,
+          updatedAt: conn.updatedAt,
+          requester: requester ? {
+            id: requester.id,
+            name: requester.name,
+            email: requester.email,
+            image: requester.image,
+          } : null,
+          receiver: receiver ? {
+            id: receiver.id,
+            name: receiver.name,
+            email: receiver.email,
+            image: receiver.image,
+          } : null,
           isRequester: conn.requesterId === currentUser.id,
         };
       })

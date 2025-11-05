@@ -186,13 +186,19 @@ export default function ConnectionsPage() {
               const otherUser = connection.isRequester
                 ? connection.receiver
                 : connection.requester;
+              
+              // Handle case where otherUser might be undefined
+              if (!otherUser) {
+                return null;
+              }
+
               const initials = otherUser.name
                 ? otherUser.name
                     .split(' ')
                     .map((n) => n[0])
                     .join('')
                     .toUpperCase()
-                : otherUser.email[0].toUpperCase();
+                : otherUser.email ? otherUser.email[0].toUpperCase() : '?';
 
               return (
                 <motion.div
