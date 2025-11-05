@@ -204,119 +204,164 @@ export default function FAQPage() {
   };
 
   const categories = [
-    { id: 'all' as const, label: 'All Questions', emoji: '📚' },
-    { id: 'patient' as const, label: 'For Patients', emoji: '🏥' },
-    { id: 'researcher' as const, label: 'For Researchers', emoji: '🔬' },
-    { id: 'general' as const, label: 'General', emoji: '💡' },
+    { id: 'all' as const, label: 'All Questions' },
+    { id: 'patient' as const, label: 'For Patients' },
+    { id: 'researcher' as const, label: 'For Researchers' },
+    { id: 'general' as const, label: 'General' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-16 px-4">
+    <div className="bg-white overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative py-24 bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 overflow-hidden">
+        {/* Animated Background Elements */}
         <motion.div
-          className="max-w-5xl mx-auto text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-8">
-            Find answers to common questions or ask our AI assistant
-          </p>
-          
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search FAQs..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 pr-12 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-white/50 shadow-lg text-lg"
-              />
-              <svg
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-          </div>
+          <motion.div
+            className="absolute top-20 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, 50, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+            animate={{
+              x: [0, -100, 0],
+              y: [0, 100, 0],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
         </motion.div>
-      </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Category Filter */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-12"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.1,
-              },
-            },
-          }}
-        >
-          {categories.map((cat) => (
-            <motion.button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                activeCategory === cat.id
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:shadow-md'
-              }`}
-              variants={fadeInUp}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <motion.h1
+              className="text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              <span className="mr-2">{cat.emoji}</span>
-              {cat.label}
-            </motion.button>
-          ))}
-        </motion.div>
+              Frequently Asked Questions
+            </motion.h1>
+            <motion.p
+              className="mt-4 text-xl text-gray-700 max-w-3xl mx-auto font-medium"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Find answers to common questions or ask our AI assistant
+            </motion.p>
+            
+            {/* Search Bar */}
+            <motion.div
+              className="max-w-2xl mx-auto mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search FAQs..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-6 py-4 pr-12 rounded-full text-gray-900 bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/50 shadow-lg text-lg border border-gray-200"
+                />
+                <svg
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* FAQ List */}
-          <div className="lg:col-span-2 space-y-4">
-            <AnimatePresence mode="wait">
-              {filteredFAQs.length > 0 ? (
-                filteredFAQs.map((faq, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                        Q
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Category Filter */}
+          <motion.div
+            className="flex flex-wrap justify-center gap-3 mb-12"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
+            }}
+          >
+            {categories.map((cat) => (
+              <motion.button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all ${
+                  activeCategory === cat.id
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                variants={fadeInUp}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {cat.label}
+              </motion.button>
+            ))}
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* FAQ List */}
+            <div className="lg:col-span-2 space-y-4">
+              <AnimatePresence mode="wait">
+                {filteredFAQs.length > 0 ? (
+                  filteredFAQs.map((faq, index) => (
+                    <motion.div
+                      key={index}
+                      className="bg-gradient-to-br from-white to-indigo-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                          Q
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-2">
+                            {faq.question}
+                          </h3>
+                          <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                          <button
+                            onClick={() => handleQuickQuestion(faq.question)}
+                            className="mt-3 text-sm text-indigo-600 hover:text-indigo-800 font-semibold"
+                          >
+                            Ask AI about this →
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">
-                          {faq.question}
-                        </h3>
-                        <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
-                        <button
-                          onClick={() => handleQuickQuestion(faq.question)}
-                          className="mt-3 text-sm text-indigo-600 hover:text-indigo-800 font-semibold"
-                        >
-                          Ask AI about this →
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
+                    </motion.div>
+                  ))
+                ) : (
                 <motion.div
                   className="bg-white rounded-2xl p-12 text-center"
                   initial={{ opacity: 0 }}
@@ -457,8 +502,9 @@ export default function FAQPage() {
               </motion.div>
             </div>
           </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
