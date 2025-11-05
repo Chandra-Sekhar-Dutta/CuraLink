@@ -143,9 +143,29 @@ export async function fetchClinicalTrials(
       const descriptionModule = protocolSection?.descriptionModule;
       const sponsorCollaboratorsModule = protocolSection?.sponsorCollaboratorsModule;
       
-      // Get first location
+      // Get all locations for better matching
       const locations = contactsLocationsModule?.locations || [];
-      const firstLocation = locations[0] || {};
+      
+      // If location filter is provided, try to find the best matching location
+      let bestLocation = locations[0] || {};
+      if (location && locations.length > 0) {
+        const normalizedLocation = location.toLowerCase().trim();
+        // Find location that best matches the filter
+        const matchingLocation = locations.find((loc: any) => {
+          const city = (loc.city || '').toLowerCase();
+          const country = (loc.country || '').toLowerCase();
+          const state = (loc.state || '').toLowerCase();
+          return city.includes(normalizedLocation) || 
+                 normalizedLocation.includes(city) ||
+                 country.includes(normalizedLocation) ||
+                 normalizedLocation.includes(country) ||
+                 state.includes(normalizedLocation) ||
+                 normalizedLocation.includes(state);
+        });
+        if (matchingLocation) {
+          bestLocation = matchingLocation;
+        }
+      }
       
       // Map phase
       const phases = designModule?.phases || [];
@@ -173,14 +193,45 @@ export async function fetchClinicalTrials(
         status,
         phase,
         conditions: conditionsModule?.conditions || [],
-        location: firstLocation.city && firstLocation.country 
-          ? `${firstLocation.city}, ${firstLocation.country}`
+        location: bestLocation.city && bestLocation.country 
+          ? `${bestLocation.city}, ${bestLocation.country}`
           : 'Location not specified',
-        city: firstLocation.city,
-        country: firstLocation.country,
+        city: bestLocation.city,
+        country: bestLocation.country,
         description: descriptionModule?.briefSummary || '',
         sponsor: sponsorCollaboratorsModule?.leadSponsor?.name || 'Unknown Sponsor',
         url: nctId.startsWith('NCT') ? `https://clinicaltrials.gov/study/${nctId}` : undefined,
+      });
+    }
+    
+    // Sort trials by location relevance if location filter is provided
+    if (location) {
+      const normalizedLocation = location.toLowerCase().trim();
+      trials.sort((a, b) => {
+        const aCity = (a.city || '').toLowerCase();
+        const aCountry = (a.country || '').toLowerCase();
+        const bCity = (b.city || '').toLowerCase();
+        const bCountry = (b.country || '').toLowerCase();
+        
+        // Exact city match gets highest priority
+        const aExactCity = aCity === normalizedLocation;
+        const bExactCity = bCity === normalizedLocation;
+        if (aExactCity && !bExactCity) return -1;
+        if (!aExactCity && bExactCity) return 1;
+        
+        // City contains location gets next priority
+        const aCityMatch = aCity.includes(normalizedLocation) || normalizedLocation.includes(aCity);
+        const bCityMatch = bCity.includes(normalizedLocation) || normalizedLocation.includes(bCity);
+        if (aCityMatch && !bCityMatch) return -1;
+        if (!aCityMatch && bCityMatch) return 1;
+        
+        // Country match gets lower priority
+        const aCountryMatch = aCountry.includes(normalizedLocation) || normalizedLocation.includes(aCountry);
+        const bCountryMatch = bCountry.includes(normalizedLocation) || normalizedLocation.includes(bCountry);
+        if (aCountryMatch && !bCountryMatch) return -1;
+        if (!aCountryMatch && bCountryMatch) return 1;
+        
+        return 0;
       });
     }
     
