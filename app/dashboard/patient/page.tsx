@@ -754,7 +754,8 @@ const PatientDashboard = () => {
                 </div>
               </div>
               <motion.button
-                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg sm:rounded-xl py-2 sm:py-3 px-3 sm:px-4 mt-3 sm:mt-4 font-semibold text-sm transition-all"
+                onClick={() => router.push('/dashboard/patient/profile-setup')}
+                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg sm:rounded-xl py-2 sm:py-3 px-3 sm:px-4 mt-3 sm:mt-4 font-semibold text-sm transition-all cursor-pointer"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
