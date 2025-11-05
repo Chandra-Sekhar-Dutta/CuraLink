@@ -184,17 +184,17 @@ const ResearcherDashboard = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 Researcher Dashboard
               </h1>
-              <p className="text-gray-600 mt-1">Welcome back, {userData.fullName}</p>
+              <p className="text-gray-600 mt-1 text-sm sm:text-base">Welcome back, {userData.fullName}</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                 <motion.button
                   onClick={() => router.push('/')}
-                  className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold text-sm transition-colors"
+                  className="px-2 sm:px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold text-xs sm:text-sm transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -204,7 +204,7 @@ const ResearcherDashboard = () => {
                   onClick={async () => {
                     await signOut({ callbackUrl: '/auth/signin' });
                   }}
-                  className="px-3 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 font-semibold text-sm transition-colors"
+                  className="px-2 sm:px-3 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 font-semibold text-xs sm:text-sm transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -225,10 +225,10 @@ const ResearcherDashboard = () => {
         </div>
       </motion.header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Quick Links */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
@@ -242,16 +242,16 @@ const ResearcherDashboard = () => {
             { href: '/dashboard/researcher/favorites', label: 'Favorites', emoji: '⭐' },
           ].map((item) => (
             <Link key={item.href} href={item.href} className="group">
-              <div className="w-full bg-white rounded-xl p-3 shadow hover:shadow-md transition-all border border-transparent hover:border-indigo-200 flex items-center gap-2">
-                <span className="text-lg">{item.emoji}</span>
-                <span className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600">{item.label}</span>
+              <div className="w-full bg-white rounded-xl p-2 sm:p-3 shadow hover:shadow-md transition-all border border-transparent hover:border-indigo-200 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <span className="text-base sm:text-lg">{item.emoji}</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-indigo-600 text-center sm:text-left">{item.label}</span>
               </div>
             </Link>
           ))}
         </motion.div>
         {/* Stats Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
@@ -260,7 +260,7 @@ const ResearcherDashboard = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer relative overflow-hidden group"
+              className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer relative overflow-hidden group"
               whileHover={{ y: -5 }}
             >
               <motion.div
@@ -269,34 +269,34 @@ const ResearcherDashboard = () => {
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               />
               <div className="relative z-10">
-                <div className="text-4xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
-                <div className="text-gray-600 text-sm mt-1">{stat.label}</div>
+                <div className="text-2xl sm:text-4xl mb-2">{stat.icon}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stat.value}</div>
+                <div className="text-gray-600 text-xs sm:text-sm mt-1">{stat.label}</div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Recent Projects */}
           <motion.div
-            className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg"
+            className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 Recent Projects
               </h2>
               <Link href="/projects">
                 <motion.button
-                  className="text-indigo-600 hover:text-indigo-800 font-semibold text-sm flex items-center gap-1"
+                  className="text-indigo-600 hover:text-indigo-800 font-semibold text-xs sm:text-sm flex items-center gap-1"
                   whileHover={{ x: 5 }}
                 >
                   View All
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </motion.button>
@@ -439,30 +439,30 @@ const ResearcherDashboard = () => {
 
             {/* Quick Actions */}
             <motion.div
-              className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl p-6 shadow-lg text-white"
+              className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Researcher Profile</h2>
+                <h2 className="text-lg sm:text-xl font-bold">Researcher Profile</h2>
               </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">ID:</span>
-                  <span className="font-semibold text-xs">{userData.researcherId}</span>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">ID:</span>
+                  <span className="font-semibold text-xs break-all text-right">{userData.researcherId}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Affiliation:</span>
-                  <span className="font-semibold text-xs">{userData.affiliation}</span>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Affiliation:</span>
+                  <span className="font-semibold text-xs break-words text-right">{userData.affiliation}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Position:</span>
-                  <span className="font-semibold text-xs">{userData.position}</span>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Position:</span>
+                  <span className="font-semibold text-xs break-words text-right">{userData.position}</span>
                 </div>
                 {(session?.user as any)?.orcidId && (
                   <div className="flex justify-between items-center">
-                    <span className="text-sm opacity-90">ORCID:</span>
+                    <span className="text-xs sm:text-sm opacity-90">ORCID:</span>
                     <ORCIDBadge />
                   </div>
                 )}

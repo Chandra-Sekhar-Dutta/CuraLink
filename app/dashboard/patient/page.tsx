@@ -258,17 +258,17 @@ const PatientDashboard = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
                 Patient Dashboard
               </h1>
-              <p className="text-gray-600 mt-1">Welcome back, {userData.fullName}</p>
+              <p className="text-gray-600 mt-1 text-sm sm:text-base">Welcome back, {userData.fullName}</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                 <motion.button
                   onClick={() => router.push('/')}
-                  className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold text-sm transition-colors"
+                  className="px-2 sm:px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold text-xs sm:text-sm transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -278,7 +278,7 @@ const PatientDashboard = () => {
                   onClick={async () => {
                     await signOut({ callbackUrl: '/auth/signin' });
                   }}
-                  className="px-3 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 font-semibold text-sm transition-colors"
+                  className="px-2 sm:px-3 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 font-semibold text-xs sm:text-sm transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -293,10 +293,10 @@ const PatientDashboard = () => {
         </div>
       </motion.header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Quick Links */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
@@ -310,9 +310,9 @@ const PatientDashboard = () => {
             { href: '/dashboard/patient/profile-setup', label: 'Profile', emoji: '🧩' },
           ].map((item) => (
             <Link key={item.href} href={item.href} className="group">
-              <div className="w-full bg-white rounded-xl p-3 shadow hover:shadow-md transition-all border border-transparent hover:border-pink-200 flex items-center gap-2">
-                <span className="text-lg">{item.emoji}</span>
-                <span className="text-sm font-semibold text-gray-800 group-hover:text-pink-600">{item.label}</span>
+              <div className="w-full bg-white rounded-xl p-2 sm:p-3 shadow hover:shadow-md transition-all border border-transparent hover:border-pink-200 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <span className="text-base sm:text-lg">{item.emoji}</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-pink-600 text-center sm:text-left">{item.label}</span>
               </div>
             </Link>
           ))}
@@ -320,19 +320,19 @@ const PatientDashboard = () => {
         {/* Profile CTA */}
         {!profile && (
           <motion.div
-            className="mb-8 p-4 rounded-xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50"
+            className="mb-6 sm:mb-8 p-3 sm:p-4 rounded-xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <div className="font-semibold text-gray-900">Personalize your dashboard</div>
-                <div className="text-sm text-gray-700">Tell us about your condition to see tailored trials, publications, and experts.</div>
+                <div className="font-semibold text-gray-900 text-sm sm:text-base">Personalize your dashboard</div>
+                <div className="text-xs sm:text-sm text-gray-700">Tell us about your condition to see tailored trials, publications, and experts.</div>
               </div>
               <button
                 onClick={() => router.push('/dashboard/patient/profile-setup')}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold"
+                className="px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold text-sm whitespace-nowrap"
               >
                 Set up profile
               </button>
@@ -342,18 +342,18 @@ const PatientDashboard = () => {
 
         {/* Personalized Recommendations */}
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* Publications */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Recommended Publications</h2>
+              <h2 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Recommended Publications</h2>
               <button
                 onClick={() => router.push('/dashboard/patient/profile-setup')}
-                className="text-xs text-pink-600 hover:text-pink-800 font-semibold"
+                className="text-xs text-pink-600 hover:text-pink-800 font-semibold whitespace-nowrap"
               >Edit profile</button>
             </div>
             {loadingExternal ? (
@@ -412,35 +412,35 @@ const PatientDashboard = () => {
           </div>
 
           {/* Experts */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Experts</h2>
+              <h2 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Experts</h2>
               <button
                 onClick={() => router.push('/dashboard/patient/profile-setup')}
-                className="text-xs text-pink-600 hover:text-pink-800 font-semibold"
+                className="text-xs text-pink-600 hover:text-pink-800 font-semibold whitespace-nowrap"
               >Edit profile</button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {filtered.experts.map((e, idx) => (
-                <div key={e.id} className="p-3 border-2 border-gray-100 rounded-xl hover:border-pink-300 transition-colors">
-                  <div className="font-semibold text-gray-900 text-sm">{e.name}</div>
+                <div key={e.id} className="p-2 sm:p-3 border-2 border-gray-100 rounded-lg sm:rounded-xl hover:border-pink-300 transition-colors">
+                  <div className="font-semibold text-gray-900 text-xs sm:text-sm">{e.name}</div>
                   <div className="text-xs text-gray-600">{e.specialty}</div>
                   <div className="text-xs text-gray-500 mt-1">{e.city}, {e.country} • {e.conditions.join(', ')}</div>
                 </div>
               ))}
               {filtered.experts.length === 0 && (
-                <div className="text-sm text-gray-600">No experts match your filters. Try enabling global view or updating location.</div>
+                <div className="text-xs sm:text-sm text-gray-600">No experts match your filters. Try enabling global view or updating location.</div>
               )}
             </div>
           </div>
 
           {/* Clinical Trials */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Clinical Trials</h2>
+              <h2 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">Clinical Trials</h2>
               <button
                 onClick={() => router.push('/dashboard/patient/profile-setup')}
-                className="text-xs text-pink-600 hover:text-pink-800 font-semibold"
+                className="text-xs text-pink-600 hover:text-pink-800 font-semibold whitespace-nowrap"
               >Edit profile</button>
             </div>
             {loadingExternal ? (
@@ -448,7 +448,7 @@ const PatientDashboard = () => {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {filtered.trials.map((t) => {
                   // Use the pre-generated URL from the trial object
                   const trialUrl = t.url || `https://clinicaltrials.gov/search?cond=${encodeURIComponent(t.conditions.join(','))}`;
@@ -459,15 +459,15 @@ const PatientDashboard = () => {
                       href={trialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block p-3 border-2 border-gray-100 rounded-xl hover:border-pink-300 hover:shadow-md transition-all cursor-pointer group"
+                      className="block p-2 sm:p-3 border-2 border-gray-100 rounded-lg sm:rounded-xl hover:border-pink-300 hover:shadow-md transition-all cursor-pointer group"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
-                          <div className="font-semibold text-gray-900 text-sm group-hover:text-pink-600 transition-colors">
+                          <div className="font-semibold text-gray-900 text-xs sm:text-sm group-hover:text-pink-600 transition-colors">
                             {t.name}
                             <span className="ml-2 text-pink-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                           </div>
-                          <div className="flex gap-2 mt-2">
+                          <div className="flex gap-2 mt-2 flex-wrap">
                             <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
                               {t.phase}
                             </span>
@@ -488,7 +488,7 @@ const PatientDashboard = () => {
                           )}
                         </div>
                         <div className="flex-shrink-0 text-gray-400 group-hover:text-pink-600 transition-colors">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </div>
@@ -497,7 +497,7 @@ const PatientDashboard = () => {
                   );
                 })}
                 {!loadingExternal && filtered.trials.length === 0 && (
-                  <div className="text-sm text-gray-600 p-4 bg-gray-50 rounded-lg">
+                  <div className="text-xs sm:text-sm text-gray-600 p-3 sm:p-4 bg-gray-50 rounded-lg">
                     {profile?.conditions && profile.conditions.length > 0 
                       ? 'Loading trials from ClinicalTrials.gov...'
                       : 'Set up your profile to see relevant clinical trials from ClinicalTrials.gov.'}
@@ -510,7 +510,7 @@ const PatientDashboard = () => {
 
         {/* Stats Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
@@ -519,7 +519,7 @@ const PatientDashboard = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer relative overflow-hidden group"
+              className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer relative overflow-hidden group"
               whileHover={{ y: -5 }}
             >
               <motion.div
@@ -528,32 +528,32 @@ const PatientDashboard = () => {
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               />
               <div className="relative z-10">
-                <div className="text-4xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
-                <div className="text-gray-600 text-sm mt-1">{stat.label}</div>
+                <div className="text-2xl sm:text-4xl mb-2">{stat.icon}</div>
+                <div className="text-xl sm:text-3xl font-bold text-gray-900">{stat.value}</div>
+                <div className="text-gray-600 text-xs sm:text-sm mt-1">{stat.label}</div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Left Column - Appointments & Trials */}
           <motion.div
-            className="lg:col-span-2 space-y-6"
+            className="lg:col-span-2 space-y-4 sm:space-y-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
             {/* Upcoming Appointments */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
                   Upcoming Appointments
                 </h2>
                 <Link href="/dashboard/patient/appointments">
                   <motion.button
-                    className="text-pink-600 hover:text-pink-800 font-semibold text-sm flex items-center gap-1"
+                    className="text-pink-600 hover:text-pink-800 font-semibold text-xs sm:text-sm flex items-center gap-1"
                     whileHover={{ x: 5 }}
                   >
                     View All
@@ -564,31 +564,31 @@ const PatientDashboard = () => {
                 </Link>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {upcomingAppointments.map((apt, index) => (
                   <motion.div
                     key={apt.id}
-                    className="p-4 border-2 border-gray-100 rounded-xl hover:border-pink-300 transition-colors cursor-pointer"
+                    className="p-3 sm:p-4 border-2 border-gray-100 rounded-lg sm:rounded-xl hover:border-pink-300 transition-colors cursor-pointer"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     whileHover={{ scale: 1.02 }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center text-white font-bold text-base sm:text-lg">
                         {new Date(apt.date).getDate()}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{apt.type}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{apt.doctor}</p>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{apt.type}</h3>
+                        <p className="text-xs sm:text-sm text-gray-600 mt-1">{apt.doctor}</p>
+                        <div className="flex items-center gap-2 sm:gap-4 mt-2 text-xs sm:text-sm text-gray-500 flex-wrap">
                           <span>📅 {apt.date}</span>
                           <span>🕐 {apt.time}</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">📍 {apt.location}</p>
                       </div>
                       <motion.button
-                        className="px-4 py-2 bg-pink-100 text-pink-600 rounded-lg font-semibold text-sm hover:bg-pink-200 transition-colors"
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-pink-100 text-pink-600 rounded-lg font-semibold text-xs sm:text-sm hover:bg-pink-200 transition-colors whitespace-nowrap"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -601,14 +601,14 @@ const PatientDashboard = () => {
             </div>
 
             {/* Active Clinical Trials */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
                   Active Clinical Trials
                 </h2>
                 <Link href="/dashboard/patient/active-trials">
                   <motion.button
-                    className="text-pink-600 hover:text-pink-800 font-semibold text-sm flex items-center gap-1"
+                    className="text-pink-600 hover:text-pink-800 font-semibold text-xs sm:text-sm flex items-center gap-1"
                     whileHover={{ x: 5 }}
                   >
                     View All
@@ -619,11 +619,11 @@ const PatientDashboard = () => {
                 </Link>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {activeTrials.map((trial, index) => (
                   <motion.div
                     key={trial.id}
-                    className="p-4 border-2 border-gray-100 rounded-xl hover:border-purple-300 transition-colors cursor-pointer"
+                    className="p-3 sm:p-4 border-2 border-gray-100 rounded-lg sm:rounded-xl hover:border-purple-300 transition-colors cursor-pointer"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -631,8 +631,8 @@ const PatientDashboard = () => {
                   >
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h3 className="font-semibold text-gray-900">{trial.name}</h3>
-                        <div className="flex items-center gap-2 mt-1">
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{trial.name}</h3>
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
                           <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
                             {trial.phase}
                           </span>
@@ -644,7 +644,7 @@ const PatientDashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600 mt-2">
+                    <div className="text-xs sm:text-sm text-gray-600 mt-2">
                       📅 Next Visit: {trial.nextVisit}
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
@@ -663,31 +663,31 @@ const PatientDashboard = () => {
           </motion.div>
 
           {/* Right Column - Health Info & Actions */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Recent Test Results */}
             <motion.div
-              className="bg-white rounded-2xl p-6 shadow-lg"
+              className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Test Results</h2>
-              <div className="space-y-3">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Recent Test Results</h2>
+              <div className="space-y-2 sm:space-y-3">
                 {recentResults.map((result, index) => (
                   <motion.div
                     key={index}
-                    className="p-3 bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl"
+                    className="p-2 sm:p-3 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg sm:rounded-xl"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900 text-sm">{result.test}</div>
-                        <div className="text-gray-600 text-sm mt-1">{result.value}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-gray-900 text-xs sm:text-sm">{result.test}</div>
+                        <div className="text-gray-600 text-xs sm:text-sm mt-1">{result.value}</div>
                         <div className="text-xs text-gray-500 mt-1">{result.date}</div>
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-2 ${
                         result.status === 'Normal' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                       }`}>
                         {result.status}
@@ -700,22 +700,22 @@ const PatientDashboard = () => {
 
             {/* Medications */}
             <motion.div
-              className="bg-white rounded-2xl p-6 shadow-lg"
+              className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Current Medications</h2>
-              <div className="space-y-3">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Current Medications</h2>
+              <div className="space-y-2 sm:space-y-3">
                 {medications.map((med, index) => (
                   <motion.div
                     key={index}
-                    className="p-3 border-l-4 border-pink-500 bg-pink-50 rounded-r-lg"
+                    className="p-2 sm:p-3 border-l-4 border-pink-500 bg-pink-50 rounded-r-lg"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <div className="font-semibold text-gray-900 text-sm">{med.name}</div>
+                    <div className="font-semibold text-gray-900 text-xs sm:text-sm">{med.name}</div>
                     <div className="text-xs text-gray-600 mt-1">{med.dosage} - {med.frequency}</div>
                     <div className="text-xs text-gray-500 mt-1">Next refill: {med.nextRefill}</div>
                   </motion.div>
@@ -725,36 +725,36 @@ const PatientDashboard = () => {
 
             {/* Health Summary Card */}
             <motion.div
-              className="bg-gradient-to-br from-pink-600 via-purple-600 to-indigo-600 rounded-2xl p-6 shadow-lg text-white"
+              className="bg-gradient-to-br from-pink-600 via-purple-600 to-indigo-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h2 className="text-xl font-bold mb-4">Patient Information</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Patient ID:</span>
-                  <span className="font-semibold text-xs">{userData.patientId}</span>
+              <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Patient Information</h2>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Patient ID:</span>
+                  <span className="font-semibold text-xs break-all">{userData.patientId}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Blood Type:</span>
-                  <span className="font-semibold">{userData.bloodGroup}</span>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Blood Type:</span>
+                  <span className="font-semibold text-sm sm:text-base">{userData.bloodGroup}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Date of Birth:</span>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Date of Birth:</span>
                   <span className="font-semibold text-xs">{userData.dateOfBirth}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm opacity-90">Phone:</span>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="text-xs sm:text-sm opacity-90">Phone:</span>
                   <span className="font-semibold text-xs">{userData.phone}</span>
                 </div>
                 <div className="pt-2 border-t border-white/20">
-                  <div className="text-sm opacity-90 mb-1">Emergency Contact:</div>
+                  <div className="text-xs sm:text-sm opacity-90 mb-1">Emergency Contact:</div>
                   <div className="font-semibold text-xs">{userData.emergencyContact}</div>
                 </div>
               </div>
               <motion.button
-                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl py-3 px-4 mt-4 font-semibold transition-all"
+                className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg sm:rounded-xl py-2 sm:py-3 px-3 sm:px-4 mt-3 sm:mt-4 font-semibold text-sm transition-all"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -764,39 +764,39 @@ const PatientDashboard = () => {
 
             {/* Quick Actions */}
             <motion.div
-              className="bg-white rounded-2xl p-6 shadow-lg"
+              className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-              <div className="space-y-3">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
+              <div className="space-y-2 sm:space-y-3">
                 <motion.button
                   onClick={() => router.push('/dashboard/patient/clinical-trials')}
-                  className="w-full bg-gradient-to-r from-pink-100 to-purple-100 hover:from-pink-200 hover:to-purple-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
+                  className="w-full bg-gradient-to-r from-pink-100 to-purple-100 hover:from-pink-200 hover:to-purple-200 rounded-lg sm:rounded-xl py-2.5 sm:py-3 px-3 sm:px-4 text-left transition-all flex items-center gap-2 sm:gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-2xl">🔍</span>
-                  <span className="font-semibold">Find Clinical Trials</span>
+                  <span className="text-xl sm:text-2xl">🔍</span>
+                  <span className="font-semibold text-sm sm:text-base">Find Clinical Trials</span>
                 </motion.button>
                 <motion.button
                   onClick={() => router.push('/dashboard/patient/prescriptions')}
-                  className="w-full bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
+                  className="w-full bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 rounded-lg sm:rounded-xl py-2.5 sm:py-3 px-3 sm:px-4 text-left transition-all flex items-center gap-2 sm:gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-2xl">💊</span>
-                  <span className="font-semibold">Refill Prescription</span>
+                  <span className="text-xl sm:text-2xl">💊</span>
+                  <span className="font-semibold text-sm sm:text-base">Refill Prescription</span>
                 </motion.button>
                 <motion.button
                   onClick={() => router.push('/dashboard/patient/contact-doctor')}
-                  className="w-full bg-gradient-to-r from-indigo-100 to-pink-100 hover:from-indigo-200 hover:to-pink-200 rounded-xl py-3 px-4 text-left transition-all flex items-center gap-3 text-gray-900"
+                  className="w-full bg-gradient-to-r from-indigo-100 to-pink-100 hover:from-indigo-200 hover:to-pink-200 rounded-lg sm:rounded-xl py-2.5 sm:py-3 px-3 sm:px-4 text-left transition-all flex items-center gap-2 sm:gap-3 text-gray-900"
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-2xl">📞</span>
-                  <span className="font-semibold">Contact Doctor</span>
+                  <span className="text-xl sm:text-2xl">📞</span>
+                  <span className="font-semibold text-sm sm:text-base">Contact Doctor</span>
                 </motion.button>
               </div>
             </motion.div>
